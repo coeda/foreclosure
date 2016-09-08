@@ -38,7 +38,7 @@ function loan(){
         return account.monthlyPayment;
       };
 
-      returnedObject.isForeClosed = function(){
+      returnedObject.isForeclosed = function(){
         return account.foreclosed;
       };
 
