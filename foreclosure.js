@@ -21,28 +21,60 @@ function loan(){
       }
     }
 
-    var returnedObject = {};
+    var returnedLoan = {};
 
-      returnedObject.getBalance = function(){
+      returnedLoan.getBalance = function(){
           return account.balance;
       };
 
-      returnedObject.receivePayment = function(amount){
+      returnedLoan.receivePayment = function(amount){
         if(amount < account.monthlyPayment){
           missPayment();
           account.balance -= account.amount;
         }
       };
 
-      returnedObject.getMonthlyPayment = function(){
+      returnedLoan.getMonthlyPayment = function(){
         return account.monthlyPayment;
       };
 
-      returnedObject.isForeclosed = function(){
+      returnedLoan.isForeclosed = function(){
         return account.foreclosed;
       };
 
-    return returnedObject;
+    return returnedLoan;
+}
+
+function borrower(loan){
+    var account = {
+    monthlyIncome: 1350,
+    funds: 2800,
+    loan: loan,
+  };
+
+  var returnedBorrower = {};
+
+  returnedBorrower.getFunds = function(){
+    return account.funds;
+  };
+
+  returnedBorrower.makePayment = function(){
+    if(account.funds > loan.monthlyPayment){
+      account.funds -= loan.monthlyPayment;
+    }
+    else{
+      loan.receivePayment(account.funds);
+      account.funds = 0;
+    }
+  };
+
+  returnedBorrower.payDay = function(){
+    account.funds += account.monthlyIncome;
+  };
+
+  return returnedBorrower;
+
 }
 
 stevesLoan = loan();
+steve = borrower(stevesLoan);
