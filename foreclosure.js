@@ -30,8 +30,8 @@ function loan(){
       returnedLoan.receivePayment = function(amount){
         if(amount < account.monthlyPayment){
           missPayment();
-          account.balance -= account.amount;
         }
+        account.balance -= amount;
       };
 
       returnedLoan.getMonthlyPayment = function(){
@@ -52,6 +52,7 @@ function borrower(loan){
     loan: loan,
   };
 
+
   var returnedBorrower = {};
 
   returnedBorrower.getFunds = function(){
@@ -59,11 +60,11 @@ function borrower(loan){
   };
 
   returnedBorrower.makePayment = function(){
-    var loanMoney = loan.getMonthlyPayment();
+    var monthlyPayment = loan.getMonthlyPayment();
 
-    if(account.funds >= loanMoney){
-      account.funds -= loanMoney;
-      loan.receivePayment(account.funds);
+    if(account.funds >= monthlyPayment){
+      account.funds -= monthlyPayment;
+      loan.receivePayment(monthlyPayment);
     }
     else{
       loan.receivePayment(account.funds);
@@ -85,7 +86,7 @@ stevesLoan = loan();
 steve = borrower(stevesLoan);
 
 
-while (stevesLoan.isForeclosed() === false) {
+while (stevesLoan.isForeclosed() === false && stevesLoan.getBalance() > 0) {
   steve.payDay();
   steve.makePayment();
   month+=1;
