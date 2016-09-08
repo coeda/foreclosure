@@ -59,13 +59,18 @@ function borrower(loan){
   };
 
   returnedBorrower.makePayment = function(){
-    if(account.funds > loan.monthlyPayment){
-      account.funds -= loan.monthlyPayment;
+    var loanMoney = loan.getMonthlyPayment();
+
+    if(account.funds >= loanMoney){
+      account.funds -= loanMoney;
+      loan.receivePayment(account.funds);
     }
     else{
       loan.receivePayment(account.funds);
       account.funds = 0;
     }
+
+
   };
 
   returnedBorrower.payDay = function(){
@@ -78,3 +83,10 @@ function borrower(loan){
 
 stevesLoan = loan();
 steve = borrower(stevesLoan);
+
+
+while (stevesLoan.isForeclosed() === false) {
+  steve.payDay();
+  steve.makePayment();
+  month+=1;
+}
