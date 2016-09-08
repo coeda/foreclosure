@@ -86,8 +86,9 @@ stevesLoan = loan();
 steve = borrower(stevesLoan);
 
 
-while (stevesLoan.isForeclosed() === false && stevesLoan.getBalance() > 0) {
+while (stevesLoan.isForeclosed() === false) {
   steve.payDay();
   steve.makePayment();
   month+=1;
+  monthsUntilEvicted = 13;
 }
